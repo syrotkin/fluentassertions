@@ -307,6 +307,23 @@ public class GenericCollectionAssertions<TCollection, T, TAssertions> :
     /// Notice that actual behavior is determined by the global defaults managed by <see cref="AssertionOptions"/>.
     /// </remarks>
     /// <param name="expectation">An <see cref="IEnumerable{T}"/> with the expected elements.</param>
+    public AndConstraint<TAssertions> BeEquivalentTo<TExpectation>(params TExpectation[] expectation)
+    {
+        return BeEquivalentTo(expectation, config => config);
+    }
+
+    /// <summary>
+    /// Asserts that a collection of objects is equivalent to another collection of objects.
+    /// </summary>
+    /// <remarks>
+    /// Objects within the collections are equivalent when both object graphs have equally named properties with the same
+    /// value, irrespective of the type of those objects. Two properties are also equal if one type can be converted to another
+    /// and the result is equal.
+    /// The type of a collection property is ignored as long as the collection implements <see cref="IEnumerable{T}"/> and all
+    /// items in the collection are structurally equal.
+    /// Notice that actual behavior is determined by the global defaults managed by <see cref="AssertionOptions"/>.
+    /// </remarks>
+    /// <param name="expectation">An <see cref="IEnumerable{T}"/> with the expected elements.</param>
     /// <param name="because">
     /// A formatted phrase as is supported by <see cref="string.Format(string,object[])" /> explaining why the assertion
     /// is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.
@@ -921,7 +938,7 @@ public class GenericCollectionAssertions<TCollection, T, TAssertions> :
             IList<T> actualItems = Subject.ConvertOrCastToList();
 
             int subjectIndex = 0;
-            
+
             for (int index = 0; index < expectedItems.Count; index++)
             {
                 T expectedItem = expectedItems[index];
@@ -2341,7 +2358,7 @@ public class GenericCollectionAssertions<TCollection, T, TAssertions> :
         {
             IList<T> actualItems = Subject.ConvertOrCastToList();
             int subjectIndex = 0;
-            
+
             foreach (var unexpectedItem in unexpectedItems)
             {
                 subjectIndex = IndexOf(actualItems, unexpectedItem, startIndex: subjectIndex);
